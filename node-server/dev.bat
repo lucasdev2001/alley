@@ -1,3 +1,3 @@
 @echo off
-pm2 start index.js --watch --no-daemon
+ts-node-dev  ./src/index.ts --watch --no-daemon
 

@@ -14,7 +14,7 @@ const schema = yup.object({
 </script>
 
 <template>
-  <main class="flex flex-col sm:flex-row h-screen">
+  <main class="flex flex-col sm:flex-row h-screen font-sans">
     <aside class="grid justify-center content-evenly sm:basis-1/2 h-full">
       <figure class="flex place-items-center">
         <img src="/logo.svg" alt="logo" class="mx-auto w-52" />

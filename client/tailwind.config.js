@@ -6,7 +6,13 @@ export default {
   },
 
   daisyui: {
-    themes: ["lofi", "black"],
+    themes: [
+      {
+        light: {
+          ...require("daisyui/src/theming/themes")["lofi"],
+        },
+      }
+    ],
   },
   plugins: [require("daisyui")],
 };

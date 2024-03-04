@@ -19,6 +19,8 @@ export const useAuthStore = defineStore("auth", () => {
 
     if (response.ok) {
       router.push({ name: "dashboard" });
+    } else {
+      router.push({ name: "home" });
     }
   }
 
