@@ -1,6 +1,11 @@
 <script setup lang="ts">
 import TheNavbar from "@/components/TheNavbar.vue";
 import router from "@/router";
+import { useUserCacheStore } from "@/stores/userCache";
+import { storeToRefs } from "pinia";
+
+const userCacheStore = useUserCacheStore();
+const { choosenCompany } = storeToRefs(userCacheStore);
 </script>
 <template>
   <TheNavbar />
@@ -35,7 +40,11 @@ import router from "@/router";
             <i class="fa-solid fa-lock ms-auto"></i>
           </a>
         </li>
-        <li @click="router.push({ name: 'roles' })" class="bg-base-200">
+        <li
+          @click="router.push({ name: 'roles' })"
+          class="bg-base-200"
+          v-if="choosenCompany"
+        >
           <a>
             Roles
             <i class="fa-solid fa-id-badge ms-auto text-lg"></i>

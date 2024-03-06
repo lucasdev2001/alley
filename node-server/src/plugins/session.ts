@@ -22,6 +22,6 @@ export default session({
   secret: /* Math.random().toString() */ "secret",
   resave: false,
   saveUninitialized: false,
-  cookie: { maxAge: 2 ^ (31 - 1), secure: false },
+  cookie: { maxAge: 3.6e6, secure: false },
   store: store,
 });

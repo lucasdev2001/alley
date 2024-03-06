@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import router from "@/router";
 import { useUserStore } from "@/stores/user";
+import { useUserCacheStore } from "@/stores/userCache";
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
 
 const userStore = useUserStore();
 const { users } = storeToRefs(userStore);
+
+const userCacheStore = useUserCacheStore();
+const { choosenCompany } = storeToRefs(userCacheStore);
 
 onMounted(async () => {
   users.value = await userStore.listUsers();
@@ -40,8 +44,9 @@ function pushToUserDetails(id: string) {
               <button
                 class="btn btn-primary"
                 @click="pushToUserDetails(user._id)"
+                :disabled="!choosenCompany"
               >
-                details
+                {{ choosenCompany ? "Details" : "Choose Company" }}
               </button>
             </td>
           </tr>

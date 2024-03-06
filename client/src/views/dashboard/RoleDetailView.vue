@@ -2,8 +2,9 @@
 import { usePermissionStore } from "@/stores/permission";
 import { useRoleStore } from "@/stores/role";
 import { useRolePermissionStore } from "@/stores/rolePermission";
+import { useUserCacheStore } from "@/stores/userCache";
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
+import { onBeforeMount, onMounted } from "vue";
 import { useRoute } from "vue-router";
 
 const route = useRoute();
@@ -11,12 +12,16 @@ const route = useRoute();
 const permissionStore = usePermissionStore();
 const roleStore = useRoleStore();
 const rolePermissionStore = useRolePermissionStore();
+const userCacheStore = useUserCacheStore();
 
 const { role } = storeToRefs(roleStore);
 
 const { permissions } = storeToRefs(permissionStore);
 
 const { rolePermissions } = storeToRefs(rolePermissionStore);
+
+const { choosenCompany } = storeToRefs(userCacheStore);
+
 const id = route.params.id as string;
 
 const roleHasPermission = (permissionId: string) => {
@@ -25,8 +30,8 @@ const roleHasPermission = (permissionId: string) => {
   );
 };
 
-onMounted(async () => {
-  role.value = await roleStore.getRole(id);
+onBeforeMount(async () => {
+  role.value = await roleStore.getRole(choosenCompany.value._id, id);
   permissions.value = await permissionStore.listPermissions();
   rolePermissions.value = await rolePermissionStore.listRolePermissions(id);
 });
@@ -46,6 +51,7 @@ async function handleCheckPermission(event: Event) {
 </script>
 <template>
   <h1 class="text-2xl font-serif">The {{ role?.name }}</h1>
+  <h1 class="text-lg font-serif">At {{ choosenCompany.name }}</h1>
   <div class="overflow-x-auto">
     <table class="table">
       <!-- head -->

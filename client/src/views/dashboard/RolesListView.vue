@@ -1,25 +1,23 @@
 <script setup lang="ts">
 import router from "@/router";
 import { useRoleStore } from "@/stores/role";
+import { useUserCacheStore } from "@/stores/userCache";
 import { storeToRefs } from "pinia";
-import { onMounted } from "vue";
 
 const roleStore = useRoleStore();
+const userCacheStore = useUserCacheStore();
+const { choosenCompany } = storeToRefs(userCacheStore);
 const { name, roles } = storeToRefs(roleStore);
 async function handleCreateRole() {
-  await roleStore.createRole(name.value);
+  await roleStore.createRole(choosenCompany.value._id, name.value);
   name.value = "";
-  roles.value = await roleStore.listRoles();
+  roles.value = await roleStore.listRoles(choosenCompany.value._id);
 }
 
 async function handleDeleteRole(id: string) {
   await roleStore.deleteRole(id);
-  roles.value = await roleStore.listRoles();
+  roles.value = await roleStore.listRoles(choosenCompany.value._id);
 }
-
-onMounted(async () => {
-  roles.value = await roleStore.listRoles();
-});
 
 function pushToRoleDetails(id: string) {
   router.push({
@@ -33,7 +31,7 @@ function pushToRoleDetails(id: string) {
     <div class="join w-full">
       <input
         class="input input-bordered join-item"
-        placeholder="permission name"
+        placeholder="role name"
         v-model="name"
       />
 
@@ -41,6 +39,9 @@ function pushToRoleDetails(id: string) {
         <i class="fa-solid fa-plus"></i>
       </button>
     </div>
+    <h1 class="text-2xl font-serif mt-3">
+      At {{ choosenCompany?.name ?? "" }}
+    </h1>
     <table class="table">
       <!-- head -->
       <thead>

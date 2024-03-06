@@ -3,6 +3,7 @@ import { usePermissionStore } from "@/stores/permission";
 import { useRoleStore } from "@/stores/role";
 import { useRolePermissionStore } from "@/stores/rolePermission";
 import { useUserStore } from "@/stores/user";
+import { useUserCacheStore } from "@/stores/userCache";
 import { useUserRoleStore } from "@/stores/userRole";
 import { storeToRefs } from "pinia";
 import { onMounted } from "vue";
@@ -13,16 +14,17 @@ const route = useRoute();
 const userStore = useUserStore();
 const roleStore = useRoleStore();
 const userRoleStore = useUserRoleStore();
+const userCacheStore = useUserCacheStore();
 
 const { user } = storeToRefs(userStore);
 const { roles } = storeToRefs(roleStore);
 const { userRoles } = storeToRefs(userRoleStore);
+const { choosenCompany } = storeToRefs(userCacheStore);
 
 const userId = route.params.id as string;
 
 onMounted(async () => {
   user.value = await userStore.getUser(userId);
-  roles.value = await roleStore.listRoles();
   userRoles.value = await userRoleStore.listUserRoles(userId);
   console.log(userRoles.value);
 });
@@ -44,6 +46,8 @@ const userHasRole = (roleId: string) => {
 </script>
 <template>
   <h1 class="text-2xl font-serif">User: {{ user?.email }}</h1>
+  <h1 class="text-lg font-serif">At {{ choosenCompany.name }}</h1>
+
   <div class="overflow-x-auto">
     <table class="table">
       <!-- head -->

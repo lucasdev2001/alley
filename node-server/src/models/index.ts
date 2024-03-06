@@ -14,6 +14,7 @@ const PermissionSchema = new Schema({
 
 const RoleSchema = new Schema({
   name: String,
+  companyId: Schema.Types.ObjectId,
 });
 
 const resourceSchema = new Schema({
