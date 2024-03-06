@@ -17,11 +17,12 @@ router.post("/", async (req, res) => {
 
   req.session.userId = user._id;
   req.session.authenticated = true;
+  req.session.save();
   res.status(200).json({ message: "Logged in" });
 });
 
 router.get("/", (req, res) => {
-  console.log(req.session);
+  console.log(req.session.authenticated);
   if (req.session.authenticated) {
     res.status(200).json({ message: "Authenticated" });
   } else {

@@ -20,6 +20,15 @@ const resourceSchema = new Schema({
   name: String,
 });
 
+const company = new Schema({
+  name: String,
+});
+
+const userCache = new Schema({
+  userId: Schema.Types.ObjectId,
+  choosenCompany: company,
+});
+
 /* association collections */
 
 const userRoleSchema = new Schema({
@@ -53,3 +62,6 @@ export const ResourcePermission = model(
   "ResourcePermission",
   resourcePermissionSchema
 );
+
+export const Company = model("Company", company);
+export const UserCache = model("UserCache", userCache);
